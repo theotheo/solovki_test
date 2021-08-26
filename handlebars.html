@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <title>Hello World</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"></script>
+
+    <script id="text-template" type="text/x-handlebars-template">
+        Hello <b>{{first_name}}</b> {{last_name}}
+    </script>
+
+</head>
+
+<body>
+
+    First name: <input id="first_name"> Last name: <input id="last_name">
+    <button id="say">Say hi!</button>
+
+    <hr>
+    <div id="result"></div>
+
+    <script>
+        function say_hi() {
+            var fname = document.getElementById('first_name').value;
+            var lname = document.getElementById('last_name').value;
+
+            var source = document.getElementById('text-template').innerHTML;
+            var template = Handlebars.compile(source);
+            var context = {
+                first_name: fname,
+                last_name: lname
+            };
+            var html = template(context);
+
+            document.getElementById('result').innerHTML = html;
+        }
+
+        document.getElementById('say').addEventListener('click', say_hi);
+    </script>
+
+
+</body>
+
+</html>

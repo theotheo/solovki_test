@@ -1,0 +1,7 @@
+#hud {
+    font-size: 100%;
+    color: white;
+    top: calc(100% - 64px);
+    left: 0%;
+    position: absolute;
+}

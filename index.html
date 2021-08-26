@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>GeoAR.js demo</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <!-- <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script> -->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.min.js"></script>
+
+    <link rel='stylesheet' type='text/css' href='style.css' />
+
+
+    <script>
+        AFRAME.registerComponent('clickhandler', {
+            init: function() {
+                this.el.addEventListener('click', () => {
+                    alert('Clicked!')
+                });
+            }
+        });
+    </script>
+
+    <template id="hud-template" type="text/x-handlebars-template">
+        lat {{latitude}}, lng {{longitude}}
+    </template>
+
+    <template id="places-template">
+        {{#each places}}
+            <!-- <a-text value={{dist}} scale="25 25 25" look-at="[gps-projected-camera]" position="0 10 0"></a-text> -->
+
+            {{#if isFar}}
+                <a-image click-handler gps-entity-place="latitude: {{location.lat}}; longitude: {{location.lng}}" 
+                name={{name}} src="assets/map-marker.png" scale="20, 20">
+                </a-image>
+            {{else}}
+                <a-box  click-handler  material="color: yellow;" scale="25 25 25" gps-entity-place="latitude: {{location.lat}}; longitude: {{location.lng}}"></a-box>
+            {{/if}}
+        {{/each}}
+      </template>
+    <!-- <script src='https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js'></script> -->
+    <!-- <script src='../../build/aframe-ar.min.js'></script> -->
+</head>
+
+<link rel="stylesheet" href="../../src/location-based/stylesheets/index.css">
+
+<!-- Dynamically add places from Javascript -->
+<script src="./script.js"></script>
+
+<body style='margin: 0; overflow: hidden;'>
+    <a-scene cursor='rayOrigin: mouse; fuse: true; fuseTimeout: 0;' raycaster="objects: [clickhandler];" vr-mode-ui="enabled: false" embedded arjs='sourceType: webcam; videoTexture: true; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: true;'>
+
+        <a-camera look-controls-enabled='false' arjs-look-controls='smoothingFactor: 0.1' gps-camera="gpsMinDistance: 10" rotation-reader>
+        </a-camera>
+    </a-scene>
+    <div id="hud"></div>
+</body>
